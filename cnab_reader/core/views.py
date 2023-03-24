@@ -2,7 +2,9 @@ import logging
 
 from django.contrib import messages
 from django.shortcuts import render
+from django.views.generic import ListView
 
+from cnab_reader.core.models import Transaction
 from cnab_reader.core.services.cnab_parser.cnab_parser import process_cnab_file
 from cnab_reader.core.services.services import save_file_from_request
 
@@ -21,3 +23,8 @@ def upload_file(request):
                 message = "Não foi possível processar o arquivo enviado"
                 messages.add_message(request, messages.ERROR, message)
     return render(request, "core/upload.html")
+
+
+class TransactionListView(ListView):
+    model = Transaction
+    queryset = Transaction.objects.all()
