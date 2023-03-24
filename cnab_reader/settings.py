@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "cnab_reader.custom_auth",
+    "cnab_reader.core",
 ]
 
 MIDDLEWARE = [
