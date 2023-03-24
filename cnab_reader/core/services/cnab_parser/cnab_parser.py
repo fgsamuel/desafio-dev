@@ -46,19 +46,19 @@ class CNABParser:
 
 def process_cnab_file(file: str):
     with open(file, "r") as f:
-        for line in f.readlines():
-            line = line.rstrip("\n")
-            try:
+        try:
+            for line in f.readlines():
+                line = line.rstrip("\n")
                 store_dict = CNABParser(line).store()
                 transaction_dict = CNABParser(line).transaction()
-            except ValueError:
-                logger.error("Invalid CNAB data length")
-                continue
 
-            with transaction.atomic():
-                store, _ = Store.objects.get_or_create(**store_dict)
-                try:
-                    Transaction.objects.create(**transaction_dict, store=store)
-                except IntegrityError:
-                    logger.warning("Transaction already exists")
-                    continue
+                with transaction.atomic():
+                    store, _ = Store.objects.get_or_create(**store_dict)
+                    try:
+                        Transaction.objects.create(**transaction_dict, store=store)
+                    except IntegrityError:
+                        logger.warning("Transaction already exists")
+                        continue
+        except Exception as e:
+            logger.error("Invalid CNAB file")
+            raise e

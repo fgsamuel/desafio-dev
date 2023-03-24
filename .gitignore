@@ -131,4 +131,5 @@ dmypy.json
 staticfiles/
 logs/
 !logs/.empty
-
+media/
+!media/.empty
