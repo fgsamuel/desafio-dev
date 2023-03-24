@@ -129,3 +129,37 @@ STATICFILES_FINDERS = [
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "%(levelname)-8s [%(asctime)s] %(name)s::%(lineno)d %(message)s",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+        "file": {
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "filename": "logs/erros.log",
+            "when": "midnight",
+            "backupCount": 7,
+            "formatter": "verbose",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": "INFO",
+        },
+        "cnab_reader.core": {
+            "handlers": ["console", "file"],
+            "level": config("LOG_LEVEL_CORE", default="WARNING"),
+            "propagate": True,
+        },
+    },
+}
