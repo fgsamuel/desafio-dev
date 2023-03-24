@@ -29,6 +29,8 @@ class Transaction(StandardModel):
         (8, "Recebimento DOC"),
         (9, "Aluguel"),
     ]
+    NEGATIVE_TRANSACTION_TYPES = [2, 3, 9]
+
     store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name="transactions")
     transaction_type = models.PositiveSmallIntegerField(choices=TRANSACTION_TYPES)
     transaction_date = models.DateField()
@@ -36,6 +38,7 @@ class Transaction(StandardModel):
     value = models.DecimalField(max_digits=10, decimal_places=2)
     cpf = models.CharField(max_length=11)
     credit_card = models.CharField(max_length=12)
+    is_positive = models.BooleanField(default=True, blank=True)
 
     class Meta:
         ordering = ["-transaction_date", "-transaction_time"]
@@ -55,3 +58,8 @@ class Transaction(StandardModel):
     @property
     def transaction_type_name(self):
         return dict(self.TRANSACTION_TYPES)[self.transaction_type]
+
+    def save(self, *args, **kwargs):
+        if int(self.transaction_type) in self.NEGATIVE_TRANSACTION_TYPES:
+            self.is_positive = False
+        super().save(*args, **kwargs)

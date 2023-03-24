@@ -20,6 +20,7 @@
       <th>Hora</th>
       <th>Dono da loja</th>
       <th>Loja</th>
+      <th>Natureza</th>
     </tr>
   </thead>
   <tbody>
@@ -33,6 +34,7 @@
       <td>{{ transaction.transaction_time }}</td>
       <td>{{ transaction.store.owner_name }}</td>
       <td>{{ transaction.store.name }}</td>
+      <td>{% if transaction.is_positive %}Entrada{% else %}Saída{% endif %}</td>
     </tr>
     {% endfor %}
   </tbody>
