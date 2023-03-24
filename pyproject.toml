@@ -1,0 +1,56 @@
+[tool.poetry]
+name = "cnab_reader"
+version = "0.1.0"
+description = "Challenge to read CNAB files"
+authors = ["Samuel Gonçalves <fg.samuel@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "~3.10"
+Django = "4.1.7"
+python-decouple = "^3.6"
+dj-database-url = "^1.0.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^22.10.0"
+isort = "^5.10.1"
+mypy = "^0.991"
+flake8 = "^6.0.0"
+bandit = "^1.7.4"
+pytest = "^7.2.0"
+pytest-django = "^4.5.2"
+pytest-cov = "^4.0.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 120
+target_version = ['py310']
+exclude = '''
+(
+  /(
+      \.eggs         # exclude a few common directories in the
+    | \.git          # root of the project
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+    | migrations
+  )/
+)
+'''
+
+
+[tool.isort]
+force_single_line = true
+line_length = 120
+skip_glob = "**/migrations/*.py"
+use_parentheses = true
+multi_line_output = 5
+include_trailing_comma = true
+lines_between_types = 1
