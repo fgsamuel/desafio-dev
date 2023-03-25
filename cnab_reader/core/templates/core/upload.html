@@ -1,29 +1,14 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="pt_BR">
-<head>
-  <meta charset="utf-8">
-  <title>Upload de Arquivo</title>
-</head>
-<body>
-{% if messages %}
-<ul class="messages">
-  {% for message in messages %}
-  <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
-    {{ message }}
-  </li>
-  {% endfor %}
-</ul>
-{% endif %}
-<h1>Upload de Arquivo</h1>
-<form method="post" enctype="multipart/form-data">
-  {% csrf_token %}
-  <label for="cnab-file">Selecione um arquivo:</label>
-  <input type="file" id="cnab-file" name="cnab-file" required>
-  <br/>
-  <br/>
-  <br/>
-  <input type="submit" value="Enviar para processamento">
-</form>
-</body>
-</html>
+{% extends 'core/base.html' %}
+
+{% block content %}
+  <h1>Upload de arquivo</h1>
+
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="cnab-file">Faça upload de um arquivo CNAB</label>
+      <input type="file" class="form-control-file" id="cnab-file" name="cnab-file" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Enviar</button>
+  </form>
+{% endblock %}

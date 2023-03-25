@@ -1,7 +1,9 @@
 import logging
 
 from django.contrib import messages
+from django.shortcuts import redirect
 from django.shortcuts import render
+from django.urls import reverse
 from django.views.generic import ListView
 
 from cnab_reader.core.models import Transaction
@@ -22,6 +24,11 @@ def upload_file(request):
                 logger.exception(e)
                 message = "Não foi possível processar o arquivo enviado"
                 messages.add_message(request, messages.ERROR, message)
+            else:
+                message = "Arquivo processado com sucesso"
+                messages.add_message(request, messages.SUCCESS, message)
+                return redirect(reverse("core:transactions"))
+
     return render(request, "core/upload.html")
 
 

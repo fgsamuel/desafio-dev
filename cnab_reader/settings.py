@@ -15,6 +15,7 @@ from pathlib import Path
 from decouple import Csv
 from decouple import config
 from dj_database_url import parse as db_url
+from django.contrib import messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -162,4 +163,8 @@ LOGGING = {
             "propagate": True,
         },
     },
+}
+
+MESSAGE_TAGS = {
+    messages.ERROR: "danger",
 }
