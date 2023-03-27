@@ -18,8 +18,11 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include
 from django.urls import path
+from django.urls import reverse_lazy
+from django.views.generic import RedirectView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("cnab_reader.core.urls")),
+    path("", RedirectView.as_view(url=reverse_lazy("core:upload_file"))),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
