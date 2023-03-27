@@ -7,6 +7,7 @@ from cnab_reader.core.models import Store
 from cnab_reader.core.models import Transaction
 from cnab_reader.core.services.cnab_parser.cnab_parser import CNABParser
 from cnab_reader.core.services.cnab_parser.cnab_parser import process_cnab_file
+from cnab_reader.core.services.services import calculate_store_balance
 
 
 class TestCNABParser:
@@ -73,3 +74,19 @@ class TestProcessCNABFile:
         process_cnab_file(self.file_path)
         assert Store.objects.count() == 5
         assert Transaction.objects.count() == 21
+
+
+class TestCalculateStoreBalance:
+    @pytest.mark.django_db
+    def test_calculate_store_balance(self):
+        cnab_negative = "3201903010000014200096206760174753****3153153453JOÃO MACEDO   BAR DO JOÃO       "
+        cnab_positive = "1201903010000014300096206760174753****3153153453JOÃO MACEDO   BAR DO JOÃO       "
+
+        store = Store.objects.create(**CNABParser(cnab_negative).store())
+        Transaction.objects.create(**CNABParser(cnab_negative).transaction(), store=store)
+        Transaction.objects.create(**CNABParser(cnab_positive).transaction(), store=store)
+
+        balance = calculate_store_balance().first()
+
+        assert balance.total == 1.0
+        assert balance.transactions.count() == 2
