@@ -1,0 +1,41 @@
+# Advanced config for NGINX
+server_tokens off;
+add_header X-XSS-Protection "1; mode=block";
+add_header X-Content-Type-Options nosniff;
+
+upstream app_server {
+    server app:8000;
+}
+
+server {
+    listen 80;
+    server_name ${NGINX_SERVER_NAME};
+
+    root /app/;
+
+
+    location / {
+        proxy_set_header Host $host;
+        proxy_redirect off;
+        if (!-f $request_filename) {
+            proxy_pass http://app_server;
+            break;
+        }
+    }
+
+    location /static/ {
+        alias /app/staticfiles/;
+    }
+
+    #compactacao gzip
+    gzip on;
+    gzip_disable "msie6";
+    gzip_vary on;
+    gzip_proxied any;
+    gzip_comp_level 6;
+    gzip_buffers 16 8k;
+    gzip_http_version 1.1;
+    gzip_min_length 256;
+    gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript application/vnd.ms-fontobject application/x-font-ttf font/opentype image/svg+xml image/x-icon;
+
+}

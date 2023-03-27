@@ -1,0 +1,44 @@
+services:
+  app:
+    build: .
+    volumes:
+      - .:/app
+    command:
+      [
+        "./scripts/wait-for-it.sh",
+        "${DB_HOST}:${DB_PORT}",
+        "-t",
+        "120",
+        "--",
+        "./scripts/start-application.sh",
+      ]
+    depends_on:
+      - db
+
+  web:
+    image: nginx:1.22.1
+    ports:
+      - "${NGINX_HTTP_PORT}:80"
+      - "${NGINX_HTTPS_PORT}:443"
+    env_file: .env
+    environment:
+      - TZ=America/Sao_Paulo
+    volumes:
+      - .:/app
+      # use env var substitution https://hub.docker.com/_/nginx
+      - ./.nginx/default.conf.template:/etc/nginx/templates/default.conf.template
+    depends_on:
+      - app
+
+  db:
+    image: postgres:14.6-alpine
+    env_file: .env
+    environment:
+      - POSTGRES_DB=${DOCKER_DB_DATABASE}
+      - POSTGRES_USER=${DOCKER_DB_USER}
+      - POSTGRES_PASSWORD=${DOCKER_DB_PASSWORD}
+    volumes:
+      - database_volume:/var/lib/postgresql/data
+
+volumes:
+  database_volume:
