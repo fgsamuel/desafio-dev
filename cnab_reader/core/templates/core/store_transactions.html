@@ -3,7 +3,11 @@
 {% block content %}
 <h1>Transação por loja</h1>
 
-<p>Clique no nome da loja para ver as transações</p>
+{% if not object_list %}
+  <p>Nenhuma transação encontrada. <a href="{% url 'core:upload_file' %}">Clique aqui</a> para fazer upload de um arquivo CNAB</p>
+  {% else %}
+  <p>Clique no nome da loja para ver as transações</p>
+{% endif %}
 
 <div id="accordion">
   {% for store in stores %}

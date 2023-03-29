@@ -5,6 +5,9 @@
   <h1>Todas Transações</h1>
 </div>
 <div class="row">
+  {% if not object_list %}
+  <p>Nenhuma transação encontrada. <a href="{% url 'core:upload_file' %}">Clique aqui</a> para fazer upload de um arquivo CNAB</p>
+  {% else %}
   <table class="table table-hover table-bordered">
     <caption>Listagem de todas transações</caption>
     <thead>
@@ -36,5 +39,6 @@
       {% endfor %}
     </tbody>
   </table>
+  {% endif %}
 </div>
 {% endblock %}
