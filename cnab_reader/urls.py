@@ -24,5 +24,6 @@ from django.views.generic import RedirectView
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("cnab_reader.core.urls")),
+    path("", include("cnab_reader.custom_auth.urls")),
     path("", RedirectView.as_view(url=reverse_lazy("core:upload_file"))),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
