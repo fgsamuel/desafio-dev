@@ -129,7 +129,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 staticfiles/
-logs/
-!logs/.empty
-media/
-!media/.empty
+/logs/*
+!/logs/.empty
+/media/
+!/media/.empty
+
