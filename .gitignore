@@ -131,6 +131,6 @@ dmypy.json
 staticfiles/
 /logs/*
 !/logs/.empty
-/media/
+/media/*
 !/media/.empty
 
