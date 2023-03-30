@@ -1,3 +1,107 @@
+# Solução do desafio de programação
+
+## Sobre a solução
+A aplicação foi desenvolvida utilizando Python e o Framework Django. O banco de dados utilizado foi o PostgreSQL.
+
+A aplicação conta com um código limpo, variáveis bem descritivas e funções com responsabilidades bem definidas.
+
+O código foi escrito de forma que seja fácil de ser entendido e de ser mantido.
+
+A aplicação conta também com uma série de bibliotecas voltada para a qualidade do código, como o flake8, black, isort e o mypy. Que ajudam
+bastante na manutenção do código.
+
+Além disso, conta com um sistema de testes automatizados com uma cobertuda de 99% do código. O que ajuda muito na confiabilidade do código durante a evolução e refatoração do mesmo.
+
+Para facilitar o deploy, o sistema também conta com a configuração do docker e docker-compose. Onde está configurado a aplicação Django, um banco de dados PostgreSQL e o Nginx.
+
+## Como rodar a aplicação
+A aplicação pode ser rodada de duas formas, utilizando o docker-compose ou rodando localmente.
+
+### Utilizando Docker (recomendado)
+#### Requisitos:
+- Docker
+- Docker-compose
+- Git
+
+#### Passos:
+- Clone o repositório
+- Acesse a pasta raiz do projeto
+- Faça uma cópia do arquivo `.env.example` e renomeie para `.env`
+- Execute o comando `docker-compose up -d --build`
+- Acesse a aplicação pelo endereço `http://localhost` (observe que está na porta padrão do nginx, que é a 80)
+
+### Rodando localmente
+#### Requisitos:
+- Python 3.10
+- Poetry 1.3.1
+- Git
+
+#### Passos:
+- Clone o repositório
+- Acesse a pasta raiz do projeto
+- Instale as dependências com o comando `poetry install`
+- Acesse o virtual env criado pelo poetry com o comando `poetry shell`
+- Faça uma cópia do arquivo `.env.example` e renomeie para `.env`
+- Descomente DATABASE_URL que está abaixo do comentário `# local example with sqlite`
+- Comente as quatro linhas que estão abaixo do comentário `# example with docker and postgres`
+- Execute as migrações com o comando `python manage.py migrate`
+- Execute o comando `python manage.py runserver`
+- Acesse a aplicação pelo endereço `http://localhost:8000`
+
+
+## Executando testes unitários
+Para checar a cobertura de testes, execute o comando `pytest --cov --cov-report=html` e abra o arquivo `index.html` que vai ser
+gerado na pasta `htmlcov`.
+
+## Executando os linters
+Já existe um arquivo configurado com todos os linters do projeto.
+
+Para executar, basta executar o comando `./scripts/.lint.sh` na raiz do projeto.
+
+## Como utilizar a aplicação
+### Fazer upload do arquivo
+- Acesse o endereço `http://localhost:8000/upload/` ou `http://localhost/upload/` (se estiver utilizando o docker)
+- Clique no botão `Choose File` e selecione o arquivo CNAB desejado
+- Clique no botão `Upload`
+- Aguarde o processamento do arquivo
+  - Será exibido uma mensagem de sucesso ou erro. E em caso de sucesso, você será redirecionado para a página de listagem das transações
+
+### Listar as transações
+- Acesse o endereço `http://localhost:8000/transactions/` ou `http://localhost/transactions/` (se estiver utilizando o docker)
+    - Esta página exibe todas as transações importadas colocando em vermelho as que são de saída.
+
+### Listar as lojas e suas respectivas transações
+- Acesse o endereço `http://localhost:8000/store-transactions/` ou `http://localhost/store-transactions/` (se estiver utilizando o docker)
+    - Esta página exibe todas as lojas e suas respectivas transações. E também exibe o saldo de cada loja.
+    - Para ver as transações de uma loja, basta clicar no nome da loja.
+
+### Login e registro
+- Para fazer o cadastro, acessar o endereço `http://localhost:8000/register/` ou `http://localhost/register/` (se estiver utilizando o docker) e preencha os seus dados
+- Para fazer o login, acessar o endereço `http://localhost:8000/login/` ou `http://localhost/login/` (se estiver utilizando o docker) e preencha os seus dados
+
+### Acessndo o admin
+A aplicação conta com o admin padrão do django que pode ser acessado da seguinte forma
+- crie um superuser com o comando `python manage.py createsuperuser` (se estiver rodando localmente) ou `docker-compose exec app python manage.py createsuperuser` (se estiver utilizando o docker)
+- Acesse o endereço `http://localhost:8000/admin/` ou `http://localhost/admin/` (se estiver utilizando o docker)
+
+### Melhorias e próximos passos
+Devido ao tempo limitado e concorrente com o trabalho, não foi possível implementar algumas funcionalidades que eu gostaria de ter implementado.
+
+As melhorias a serem discutidas seriam:
+
+- Implementar Paginação nas listagens
+- Implementar filtros nas listagens
+- Implementar uma api REST utilizando o Django Rest Framework com autenticação JWT
+- Implementar um sistema de processo em background para processar os arquivos CNAB e não travar a aplicação na hora da resposta
+  - Seria implementado com o DjangoQ
+- Melhorias na parte visual da aplicação
+
+
+
+-------------------------------------------------------------------------------------------------------
+
+
+
 # Desafio programação - para vaga desenvolvedor
 
 Por favor leiam este documento do começo ao fim, com muita atenção.
